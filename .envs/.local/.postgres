@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=sayap_ikm
+POSTGRES_USER=WVDEHUVsCcPhXYhBSvuSsSBVAyoCYdgt
+POSTGRES_PASSWORD=MomtCc52iiQrCqIce2qEUQ4XBV14U02CnvflBYCFA2Y2kRnC5l9Z9t3LdEe0fGQq
