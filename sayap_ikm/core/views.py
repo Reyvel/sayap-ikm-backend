@@ -57,6 +57,14 @@ class ProjectViewSet(FlexFieldsModelViewSet):
     filterset_class = ProjectFilterSet
     permit_list_expands = ('company', 'reports', 'investments',)
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if self.request.user.is_authenticated \
+            and self.request.user.role == 'OW':
+            qs = qs.filter(owners=self.request.user)
+
+        return qs
+
     @action(detail=True, methods=('POST'))
     def invest(self, request, *args, **kwargs):
         project = self.get_object()
