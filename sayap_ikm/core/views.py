@@ -5,6 +5,8 @@ from rest_flex_fields import FlexFieldsModelViewSet
 from sayap_ikm.core import models, serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
 
 User = get_user_model()
 
@@ -48,10 +50,12 @@ class ProjectFilterSet(filters.FilterSet):
         exclude = ('image', 'prospectus',)
 
 class ProjectViewSet(FlexFieldsModelViewSet):
-    queryset = models.Project.objects.all()
+    queryset = models.Project.objects.annotate(
+        funded=Coalesce(Sum('investments__amount'), 0)
+    )
     serializer_class = serializers.ProjectSerializer
     filterset_class = ProjectFilterSet
-    permit_list_expands = ('company', 'reports',)
+    permit_list_expands = ('company', 'reports', 'investments',)
 
     @action(detail=True, methods=('POST'))
     def invest(self, request, *args, **kwargs):

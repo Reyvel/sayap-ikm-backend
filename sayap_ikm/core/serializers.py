@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from rest_flex_fields import FlexFieldsModelSerializer
 from django.contrib.auth import get_user_model
 from sayap_ikm.core import models
@@ -52,6 +53,7 @@ class CompanySerializer(FlexFieldsModelSerializer):
         }
 
 class ProjectSerializer(FlexFieldsModelSerializer):
+    funded = serializers.IntegerField(read_only=True)
     class Meta:
         model = models.Project
         fields = '__all__'
