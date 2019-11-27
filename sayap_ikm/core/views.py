@@ -3,6 +3,8 @@ from django_filters import rest_framework as filters
 from django.contrib.auth import get_user_model
 from rest_flex_fields import FlexFieldsModelViewSet
 from sayap_ikm.core import models, serializers
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -19,6 +21,7 @@ class UserViewSet(FlexFieldsModelViewSet):
     permit_list_expands = ('companies', 'investments', 'holds',)
     filterset_class = UserFilterSet
     search_fields = ('first_name', 'last_name',)
+
 
 class CompanyFilterSet(filters.FilterSet):
     class Meta:
@@ -50,6 +53,19 @@ class ProjectViewSet(FlexFieldsModelViewSet):
     filterset_class = ProjectFilterSet
     permit_list_expands = ('company', 'reports',)
 
+    @action(detail=True, methods=('POST'))
+    def invest(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance = models.ProjectInvest.objects.create(
+            user=request.user,
+            project=instance,
+            amount=request.data.get('amount')
+        )
+
+        serializer = self.get_serializer(instance)
+
+        return Response(serializer.data)
+
 
 class ReportFilterSet(filters.FilterSet):
     class Meta:
@@ -64,11 +80,18 @@ class ReportViewSet(FlexFieldsModelViewSet):
     permit_list_expands = ('project',)
 
 
-class InvestViewSet(FlexFieldsModelViewSet):
-    queryset = models.Invest.objects.all()
-    serializer_class = serializers.InvestSerializer
+class CompanyInvestViewSet(FlexFieldsModelViewSet):
+    queryset = models.CompanyInvest.objects.all()
+    serializer_class = serializers.CompanyInvestSerializer
     filterset_fields = '__all__'
     permit_list_expand = ('company', 'user')
+
+
+class ProjectViewSet(FlexFieldsModelViewSet):
+    queryset = models.ProjectInvest.objects.all()
+    serializer_class = serializers.ProjectInvestSerializer
+    filterset_fields = '__all__'
+    permit_list_expand = ('project', 'user')
 
 
 class YieldViewSet(FlexFieldsModelViewSet):

@@ -77,9 +77,9 @@ class ReportSerializer(FlexFieldsModelSerializer):
             )
         }
 
-class InvestSerializer(FlexFieldsModelSerializer):
+class CompanyInvestSerializer(FlexFieldsModelSerializer):
     class Meta:
-        model = models.Invest
+        model = models.CompanyInvest
         fields = '__all__'
         expandable_fields = {
             'user': (
@@ -88,6 +88,22 @@ class InvestSerializer(FlexFieldsModelSerializer):
             ),
             'company': (
                 'sayap_ikm.core.serializers.CompanySerializer',
+                {'source': 'company'}
+            )
+        }
+
+
+class ProjectInvestSerializer(FlexFieldsModelSerializer):
+    class Meta:
+        model = models.ProjectInvest
+        fields = '__all__'
+        expandable_fields = {
+            'user': (
+                'sayap_ikm.core.serializers.UserSerializer',
+                {'source': 'user'},
+            ),
+            'project': (
+                'sayap_ikm.core.serializers.ProjectSerializer',
                 {'source': 'company'}
             )
         }

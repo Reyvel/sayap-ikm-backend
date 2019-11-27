@@ -35,8 +35,14 @@ class Report(models.Model):
     documentation = models.ImageField(null=True)
 
 
-class Invest(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='investments')
+class ProjectInvest(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='project_investments')
+    project = models.ForeignKey(Project, null=True, on_delete=models.CASCADE, related_name='investments')
+    amount = models.PositiveIntegerField(default=0)
+
+
+class CompanyInvest(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='company_investments')
     company = models.ForeignKey(Company, null=True, on_delete=models.CASCADE, related_name='investments')
     amount = models.PositiveIntegerField(default=0)
 
