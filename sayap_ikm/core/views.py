@@ -54,7 +54,7 @@ class CompanyViewSet(FlexFieldsModelViewSet):
 
 class ProjectFilterSet(filters.FilterSet):
     class Meta:
-        models = models.Project
+        model = models.Project
         exclude = ('image', 'prospectus',)
 
 class ProjectViewSet(FlexFieldsModelViewSet):
