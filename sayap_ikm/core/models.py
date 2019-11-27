@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class Company(models.Model):
-    owners = models.ManyToManyField(User, related_name='companies', null=True, default=list)
+    owners = models.ManyToManyField(User, related_name='companies', null=True, default=list, blank=True)
     name = models.CharField(max_length=255, blank=True, default='')
     description = models.TextField(blank=True, default='')
     address = models.CharField(max_length=255, blank=True, default='')

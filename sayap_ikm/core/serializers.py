@@ -29,6 +29,14 @@ class CompanySerializer(FlexFieldsModelSerializer):
     class Meta:
         model = models.Company
         fields = '__all__'
+        extra_kwargs = {
+            'owners': {
+                'required': False,
+                'allow_empty': True,
+                'allow_null': True,
+                'default': list
+            }
+        }
         expandable_fields = {
             'owners': (
                 'sayap_ikm.core.serializers.UserSerializer',
