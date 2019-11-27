@@ -22,6 +22,8 @@ class Project(models.Model):
     prospectus = models.FileField(null=True)
     target = models.PositiveIntegerField(default=0)
     image = models.ImageField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    n_invests = models.PositiveIntegerField(default=0)
 
 
 class Report(models.Model):
