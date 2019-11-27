@@ -38,6 +38,14 @@ class CompanyViewSet(FlexFieldsModelViewSet):
     permit_list_expands = ('owners', 'projects', 'investments', 'yields', 'holds')
     search_fields = ('owners__first_name', 'owners__last_name', 'name', 'description', 'address',)
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if self.request.user.is_authenticated \
+            and self.request.user.role == 'OW':
+            qs = qs.filter(owners=self.request.user)
+
+        return qs
+
     def perform_create(self, serializer):
         serializer.save(
             owners=[self.request.user]
@@ -56,14 +64,6 @@ class ProjectViewSet(FlexFieldsModelViewSet):
     serializer_class = serializers.ProjectSerializer
     filterset_class = ProjectFilterSet
     permit_list_expands = ('company', 'reports', 'investments',)
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-        if self.request.user.is_authenticated \
-            and self.request.user.role == 'OW':
-            qs = qs.filter(owners=self.request.user)
-
-        return qs
 
     @action(detail=True, methods=('POST'))
     def invest(self, request, *args, **kwargs):
