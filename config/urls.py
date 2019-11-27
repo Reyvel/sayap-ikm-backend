@@ -4,6 +4,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
+from sayap_ikm.core.urls import router
+
+from rest_framework.authentication import TokenAuthentication
+from rest_auth.registration.views import LoginView
+
+class LoginViewCustom(LoginView):
+    authentication_classes = (TokenAuthentication,)
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
@@ -16,6 +23,11 @@ urlpatterns = [
     path("users/", include("sayap_ikm.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path("api-auth", include("rest_framework.urls")),
+    path("api/lib/rest-auth/login/", LoginViewCustom.as_view(), name="rest_login"),
+    path("api/lib/rest-auth/", include("rest_auth.urls")),
+
+    path("api/core/", include(router.urls))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
