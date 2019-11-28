@@ -63,6 +63,20 @@ class CompanyViewSet(FlexFieldsModelViewSet):
         serializer = self.get_serializer(instance)
 
         return Response(serializer.data)
+        
+    @action(detail=False, methods=('GET',))
+    def my(self, request, *args, **kwargs):
+        invested = models.CompanyInvest.objects.filter(
+           user=self.request.user,
+           company=OuterRef('pk')
+        )
+        self.queryset = self.queryset.annotate(
+            is_invested=Exists(invested)
+        ).filter(
+            is_invested=True
+        )
+
+        return self.list(request, *args, **kwargs)
 
 class ProjectFilterSet(filters.FilterSet):
     class Meta:
