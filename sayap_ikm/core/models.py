@@ -13,6 +13,7 @@ class Company(models.Model):
     image = models.ImageField(null=True)
     prospectus = models.FileField(null=True)
     n_shares = models.PositiveIntegerField(default=0)
+    share_price = models.PositiveIntegerField(default=0)
 
 
 class Project(models.Model):
