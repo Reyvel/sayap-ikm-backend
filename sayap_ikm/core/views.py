@@ -5,7 +5,7 @@ from rest_flex_fields import FlexFieldsModelViewSet
 from sayap_ikm.core import models, serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import Sum
+from django.db.models import Sum, Count, Exists, OuterRef
 from django.db.models.functions import Coalesce
 
 User = get_user_model()
@@ -65,7 +65,22 @@ class ProjectViewSet(FlexFieldsModelViewSet):
     filterset_class = ProjectFilterSet
     permit_list_expands = ('company', 'reports', 'investments',)
 
-    @action(detail=True, methods=('POST'))
+    @action(detail=False, methods=('GET',))
+    def my(self, request, *args, **kwargs):
+        invested = models.ProjectInvest.objects.filter(
+           user=self.request.user,
+           project=OuterRef('pk')
+        )
+        self.queryset = self.queryset.annotate(
+            is_invested=Exists(invested)
+        ).filter(
+            is_invested=True
+        )
+
+        return self.list(request, *args, **kwargs)
+
+
+    @action(detail=True, methods=('POST',))
     def invest(self, request, *args, **kwargs):
         project = self.get_object()
         instance = models.ProjectInvest.objects.create(
@@ -99,6 +114,18 @@ class CompanyInvestViewSet(FlexFieldsModelViewSet):
     filterset_fields = '__all__'
     permit_list_expand = ('company', 'user')
 
+    @action(detail=True, methods=('POST',))
+    def invest(self, request, *args, **kwargs):
+        company = self.get_object()
+        instance = models.CompanyInvest.objects.create(
+            user=request.user,
+            company=company,
+            amount=request.data.get('amount')
+        )
+
+        serializer = self.get_serializer(instance)
+
+        return Response(serializer.data)
 
 class ProjectInvestViewSet(FlexFieldsModelViewSet):
     queryset = models.ProjectInvest.objects.all()
