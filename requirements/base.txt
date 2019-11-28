@@ -5,6 +5,7 @@ rcssmin==1.0.6  # https://github.com/ndparker/rcssmin
 argon2-cffi==19.2.0  # https://github.com/hynek/argon2_cffi
 whitenoise==4.1.4  # https://github.com/evansd/whitenoise
 redis==3.3.11  # https://github.com/antirez/redis
+celery==4.3.0  # pyup: < 5.0  # https://github.com/celery/celery
 
 # Django
 # ------------------------------------------------------------------------------

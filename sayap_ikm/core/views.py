@@ -60,6 +60,7 @@ class CompanyViewSet(FlexFieldsModelViewSet):
             amount=request.data.get('amount')
         )
 
+        self.serializer_class = serializers.CompanyInvestSerializer
         serializer = self.get_serializer(instance)
 
         return Response(serializer.data)
@@ -116,6 +117,7 @@ class ProjectViewSet(FlexFieldsModelViewSet):
         )
 
         project.n_invests += 1
+        self.serializer_class = serializers.ProjectInvestSerializer
         serializer = self.get_serializer(instance)
 
         return Response(serializer.data)
