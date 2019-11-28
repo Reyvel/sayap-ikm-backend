@@ -51,6 +51,18 @@ class CompanyViewSet(FlexFieldsModelViewSet):
             owners=[self.request.user]
         )
 
+    @action(detail=True, methods=('POST',))
+    def invest(self, request, *args, **kwargs):
+        company = self.get_object()
+        instance = models.CompanyInvest.objects.create(
+            user=request.user,
+            company=company,
+            amount=request.data.get('amount')
+        )
+
+        serializer = self.get_serializer(instance)
+
+        return Response(serializer.data)
 
 class ProjectFilterSet(filters.FilterSet):
     class Meta:
@@ -114,18 +126,6 @@ class CompanyInvestViewSet(FlexFieldsModelViewSet):
     filterset_fields = '__all__'
     permit_list_expand = ('company', 'user')
 
-    @action(detail=True, methods=('POST',))
-    def invest(self, request, *args, **kwargs):
-        company = self.get_object()
-        instance = models.CompanyInvest.objects.create(
-            user=request.user,
-            company=company,
-            amount=request.data.get('amount')
-        )
-
-        serializer = self.get_serializer(instance)
-
-        return Response(serializer.data)
 
 class ProjectInvestViewSet(FlexFieldsModelViewSet):
     queryset = models.ProjectInvest.objects.all()
