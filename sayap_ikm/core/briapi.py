@@ -44,7 +44,7 @@ def create_briva(timestamp, token, signature, body):
         json=body
     )
 
-    return resp.json()['status']
+    return resp.json()
 
 def create_order(user, amount):
     timestamp =  get_bri_timestamp()
