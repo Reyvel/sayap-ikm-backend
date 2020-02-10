@@ -32,7 +32,7 @@ class UserViewSet(FlexFieldsModelViewSet):
         if serializer.is_valid(raise_exception=True):
             user = request.user
             amount = serializer.data.get('amount')
-            is_success = briapi.create_order(user)
+            is_success = briapi.create_order(user, amount)
 
             if is_success:
                 ret_serializer = serializers.TopupSerializer(data={
