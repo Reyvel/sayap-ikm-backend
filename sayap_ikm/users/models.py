@@ -19,6 +19,7 @@ class User(AbstractUser):
     role = CharField(max_length=10, choices=ROLE_CHOICES, default=INVESTOR)
     balance = PositiveIntegerField(default=0)
     customer_code = CharField(default='', blank=True, max_length=255)
+    top_up = PositiveIntegerField(default=0)
     friends = ManyToManyField('self', blank=True)
 
     def get_absolute_url(self):

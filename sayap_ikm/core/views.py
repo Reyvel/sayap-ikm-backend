@@ -64,8 +64,9 @@ class UserViewSet(FlexFieldsModelViewSet):
         customer_code = request.query_params.get('customer_code')
         user = User.objects.get(customer_code=customer_code)
         if user:
-            customer_code = user.customer_code
-            return Response(briapi.get_order(customer_code))
+            return Response({'amount': user.top_up})
+            # customer_code = user.customer_code
+            # return Response(briapi.get_order(customer_code))
         return Response(
             {"error": "no customer code found"},
             status=status.HTTP_400_BAD_REQUEST
@@ -77,8 +78,8 @@ class UserViewSet(FlexFieldsModelViewSet):
         user = User.objects.get(customer_code=customer_code)
         if user:
             customer_code = user.customer_code
-            resp = briapi.get_order(customer_code) 
-            user.balance += resp['Amount']
+            # resp = briapi.get_order(customer_code) 
+            user.balance += user.top_up
             user.save()
             return Response()
         return Response(
