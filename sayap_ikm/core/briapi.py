@@ -129,3 +129,29 @@ def create_order(user, amount):
 
     return create_briva(timestamp, token, signature, body)
 
+def get_order(customer_code):
+    timestamp =  get_bri_timestamp()
+    token = get_bri_token()
+
+    body = ''
+
+    signature = get_bri_signature(
+        '/sandbox/v1/briva/briva/j104408/77777/' + customer_code,
+        'GET',
+        token,
+        timestamp,
+        body
+    )
+
+    resp = requests.get(
+        url,
+        headers={
+            'BRI-Timestamp': timestamp,
+            'BRI-Signature': signature,
+            'Authorization': token,
+            'Content-Type': 'application/json'
+        },
+        data=body
+    )
+
+    return resp.json()['data']

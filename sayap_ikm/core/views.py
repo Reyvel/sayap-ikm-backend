@@ -43,6 +43,34 @@ class UserViewSet(FlexFieldsModelViewSet):
             else:
                 return Response(resp, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=False, methods=('GET',))
+    def check_order(self, request, *args, **kwargs):
+        customer_code = request.query_params.get('customer_code')
+        user = User.objects.get(customer_code=customer_code)
+        if user:
+            customer_code = user.customer_code
+            return Response(briapi.get_order(customer_code))
+        return Response(
+            {"error": "no customer code found"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    @action(detail=False, methods=('POST',))
+    def finish_order(self, request, *args, **kwargs):
+        customer_code = request.query_params.get('customer_code')
+        user = User.objects.get(customer_code=customer_code)
+        if user:
+            customer_code = user.customer_code
+            resp = briapi.get_order(customer_code) 
+            user.balance += resp['Amount']
+            user.save()
+            return Response()
+        return Response(
+            {"error": "no customer code found"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
 class CompanyFilterSet(filters.FilterSet):
     class Meta:
         model = models.Company
