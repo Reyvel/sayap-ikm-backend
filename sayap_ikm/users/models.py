@@ -18,6 +18,7 @@ class User(AbstractUser):
     image = ImageField(null=True)
     role = CharField(max_length=10, choices=ROLE_CHOICES, default=INVESTOR)
     balance = PositiveIntegerField(default=0)
+    customer_code = CharField(default='', blank=True, max_length=255)
 
     def get_absolute_url(self):
         return reverse("users:detail", kwargs={"username": self.username})

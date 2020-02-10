@@ -1,10 +1,17 @@
 import briapi
 from datetime import datetime
 
+class User:
+    pass
+
+user = User()
+user.id = 1
+briapi.delete_order(user)
+
 body = {
             "institutionCode": "J104408",
             "brivaNo": "77777",
-            "custCode": "11216789",
+            "custCode": "467976160498",
             "nama": "Septri Nur",
             "amount": "1000000",
             "keterangan": "",
@@ -21,4 +28,4 @@ signature = briapi.get_bri_signature(
         body
     )
 
-briapi.create_briva(timestamp, token, signature, body)
+print(briapi.create_briva(timestamp, token, signature, body))
