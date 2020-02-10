@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django_filters import rest_framework as filters
 from django.contrib.auth import get_user_model
 from rest_flex_fields import FlexFieldsModelViewSet
-from sayap_ikm.core import models, serializers, briapi, status
+from sayap_ikm.core import models, serializers, briapi
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import status
 from django.db.models import Sum, Count, Exists, OuterRef
 from django.db.models.functions import Coalesce
 
@@ -35,9 +36,9 @@ class UserViewSet(FlexFieldsModelViewSet):
 
             if is_success:
                 ret_serializer = serializers.TopupSerializer(data={
-                    briva_no='77777'
-                    customer_code=user.id,
-                    amount=amount
+                    'briva_no': '77777',
+                    'customer_code': user.id,
+                    'amount': amount
                 })
 
                 return Response(ret_serializer.data)

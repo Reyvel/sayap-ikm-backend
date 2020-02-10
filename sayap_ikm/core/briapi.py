@@ -47,10 +47,10 @@ def create_briva(timestamp, token, signature, body):
     return resp.json()['status']
 
 def create_order(user, amount):
-   timestamp =  get_bri_timestamp()
-   token = get_bri_token()
+    timestamp =  get_bri_timestamp()
+    token = get_bri_token()
 
-   body = {
+    body = {
             "institutionCode": "J104408",
             "brivaNo": "77777",
             "custCode": str(user.id),
@@ -58,9 +58,9 @@ def create_order(user, amount):
             "amount": amount,
             "keterangan": "",
             "expiredDate": "2020-03-15 09:57:26"
-   }
+    }
 
-signature = get_bri_signature(
+    signature = get_bri_signature(
         '/sandbox/v1/briva',
         'POST',
         token,
@@ -68,5 +68,5 @@ signature = get_bri_signature(
         body
     )
 
-return briapi.create_briva(timestamp, token, signature, body)
+    return briapi.create_briva(timestamp, token, signature, body)
 
