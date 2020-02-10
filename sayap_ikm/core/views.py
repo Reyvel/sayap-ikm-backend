@@ -26,6 +26,22 @@ class UserViewSet(FlexFieldsModelViewSet):
     filterset_class = UserFilterSet
     search_fields = ('first_name', 'last_name',)
 
+    @action(detail=True, methods=('POST'))
+    def add(self, request, *args, **kwargs):
+        user = request.user
+        instance = self.get_object()
+        user.friends.add(instance)
+
+        return Response()
+
+    @action(detail=True, methods=('POST'))
+    def remove(self, request, *args, **kwargs):
+        user = request.user
+        instance = self.get_object()
+        user.friends.remove(instance)
+
+        return Response()
+
     @action(detail=False, methods=('POST',))
     def topup(self, request, *args, **kwargs):
         serializer = serializers.TopupSerializer(data=request.data)
