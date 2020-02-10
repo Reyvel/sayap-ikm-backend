@@ -125,6 +125,7 @@ class CompanyViewSet(FlexFieldsModelViewSet):
     @action(detail=True, methods=('POST',))
     def invest(self, request, *args, **kwargs):
         company = self.get_object()
+        user = request.user
         instance = models.CompanyInvest.objects.create(
             user=request.user,
             company=company,
@@ -184,6 +185,7 @@ class ProjectViewSet(FlexFieldsModelViewSet):
     @action(detail=True, methods=('POST',))
     def invest(self, request, *args, **kwargs):
         project = self.get_object()
+        user = request.user
         instance = models.ProjectInvest.objects.create(
             user=request.user,
             project=project,
