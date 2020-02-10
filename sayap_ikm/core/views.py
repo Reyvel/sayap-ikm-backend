@@ -22,7 +22,7 @@ class UserFilterSet(filters.FilterSet):
 class UserViewSet(FlexFieldsModelViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
-    permit_list_expands = ('companies', 'investments', 'holds',)
+    permit_list_expands = ('companies', 'investments', 'holds', 'friends')
     filterset_class = UserFilterSet
     search_fields = ('first_name', 'last_name',)
 
