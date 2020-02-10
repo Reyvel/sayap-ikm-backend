@@ -26,6 +26,12 @@ class UserViewSet(FlexFieldsModelViewSet):
     filterset_class = UserFilterSet
     search_fields = ('first_name', 'last_name',)
 
+    @action(detail=False, methods=('GET',))
+    def connections(self, request, *args, **kwargs):
+        user = request.user
+        self.queryset = self.queryset.filter(friends=user)
+        return super().list(request, *args, **kwargs)
+
     @action(detail=True, methods=('POST',))
     def add(self, request, *args, **kwargs):
         user = request.user
