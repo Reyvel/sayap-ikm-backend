@@ -76,7 +76,7 @@ class UserViewSet(FlexFieldsModelViewSet):
 
     @action(detail=False, methods=('POST',))
     def finish_order(self, request, *args, **kwargs):
-        customer_code = request.body.get('customer_code')
+        customer_code = request.data.get('customer_code')
         user = User.objects.get(customer_code=customer_code)
         if user:
             customer_code = user.customer_code
