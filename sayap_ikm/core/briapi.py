@@ -24,6 +24,9 @@ def get_bri_token():
 def get_bri_signature(path, verb, token, timestamp, body):
     payload = 'path=' + path + '&verb=' + verb + '&token=' + token + '&timestamp=' \
         + timestamp + '&body=' + json.dumps(body)
+    # payload = 'path=' + path + '&verb=' + verb + '&token=' + token + '&timestamp=' \
+    #     + timestamp + '&body='
+    print(payload)
     # payload = json.dumps(body)
     maker = hmac.new(
         bytearray(SECRET, encoding='utf-8'),
@@ -134,7 +137,7 @@ def get_order(customer_code):
     timestamp =  get_bri_timestamp()
     token = get_bri_token()
 
-    body = ''
+    body = {}
 
     signature = get_bri_signature(
         '/sandbox/v1/briva/briva/j104408/77777/' + customer_code,
@@ -150,9 +153,12 @@ def get_order(customer_code):
             'BRI-Timestamp': timestamp,
             'BRI-Signature': signature,
             'Authorization': token,
-            'Content-Type': 'application/json'
+            # 'Content-Type': 'application/json'
         },
         data=body
     )
+
+    print(resp.json())
+    print(resp.request.body)
 
     return resp.json()['data']
