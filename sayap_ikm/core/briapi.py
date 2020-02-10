@@ -112,7 +112,7 @@ def create_order(user, amount):
     body = {
             "institutionCode": "J104408",
             "brivaNo": "77777",
-            "custCode": "2847182059" + str(customer_code),
+            "custCode": str(customer_code),
             "nama": user.first_name + ' ' + user.last_name,
             "amount": amount,
             "keterangan": "",
