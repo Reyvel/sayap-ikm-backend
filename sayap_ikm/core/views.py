@@ -35,14 +35,11 @@ class UserViewSet(FlexFieldsModelViewSet):
             resp = briapi.create_order(user, amount)
 
             if resp['status']:
-                ret_serializer = serializers.TopupSerializer(data={
+                return Response({
                     'briva_no': '77777',
                     'customer_code': resp['data']['custCode'],
                     'amount': amount
                 })
-                ret_serializer.is_valid()
-
-                return Response(ret_serializer.data)
             else:
                 return Response(resp, status=status.HTTP_400_BAD_REQUEST)
 
