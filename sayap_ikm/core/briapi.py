@@ -68,5 +68,5 @@ def create_order(user, amount):
         body
     )
 
-    return briapi.create_briva(timestamp, token, signature, body)
+    return create_briva(timestamp, token, signature, body)
 
