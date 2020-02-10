@@ -37,9 +37,10 @@ class UserViewSet(FlexFieldsModelViewSet):
             if resp['status']:
                 ret_serializer = serializers.TopupSerializer(data={
                     'briva_no': '77777',
-                    'customer_code': user.id,
+                    'customer_code': resp['data']['custCode'],
                     'amount': amount
                 })
+                ret_serializer.is_valid()
 
                 return Response(ret_serializer.data)
             else:
