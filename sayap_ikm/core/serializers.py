@@ -9,7 +9,7 @@ User = get_user_model()
 class UserSerializer(FlexFieldsModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'role', 'image', 'friends')
+        fields = ('id', 'username', 'first_name', 'last_name', 'role', 'image', 'friends', 'balance')
         expandable_fields = {
             'companies': (
                 'sayap_ikm.core.serializers.CompanySerializer',
