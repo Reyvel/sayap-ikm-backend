@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField, ImageField
+from django.db.models import CharField, ImageField, PositiveIntegerField
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
@@ -17,6 +17,7 @@ class User(AbstractUser):
     name = CharField(_("Name of User"), blank=True, max_length=255)
     image = ImageField(null=True)
     role = CharField(max_length=10, choices=ROLE_CHOICES, default=INVESTOR)
+    balance = PositiveIntegerField(default=0)
 
     def get_absolute_url(self):
         return reverse("users:detail", kwargs={"username": self.username})

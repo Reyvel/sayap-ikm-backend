@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django_filters import rest_framework as filters
 from django.contrib.auth import get_user_model
 from rest_flex_fields import FlexFieldsModelViewSet
-from sayap_ikm.core import models, serializers
+from sayap_ikm.core import models, serializers, briapi, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Sum, Count, Exists, OuterRef
@@ -17,6 +17,7 @@ class UserFilterSet(filters.FilterSet):
         model = models.User
         fields = ('first_name', 'last_name', 'role')
 
+
 class UserViewSet(FlexFieldsModelViewSet):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
@@ -24,6 +25,24 @@ class UserViewSet(FlexFieldsModelViewSet):
     filterset_class = UserFilterSet
     search_fields = ('first_name', 'last_name',)
 
+    @action(detail=False, methods=('POST',))
+    def topup(self, request, *args, **kwargs):
+        serializer = serializers.TopupSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            user = request.user
+            amount = serializer.data.get('amount')
+            is_success = briapi.create_order(user)
+
+            if is_success:
+                ret_serializer = serializers.TopupSerializer(data={
+                    briva_no='77777'
+                    customer_code=user.id,
+                    amount=amount
+                })
+
+                return Response(ret_serializer.data)
+            else:
+                return Response(status_code=status.HTTP_400_BAD_REQUEST)
 
 class CompanyFilterSet(filters.FilterSet):
     class Meta:

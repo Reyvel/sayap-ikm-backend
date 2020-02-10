@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_flex_fields import FlexFieldsModelSerializer
 from django.contrib.auth import get_user_model
 from sayap_ikm.core import models
+from rest_framework import serializers
 
 User = get_user_model()
 
@@ -149,3 +150,8 @@ class HoldSerializer(FlexFieldsModelSerializer):
                 {'source': 'company'}
             )
         }
+
+class TopupSerializer(serializers.Serializer):
+    briva_no = serializers.CharField(read_only=True)
+    customer_code = serializers.CharField(read_only=True)
+    amount = serializers.IntegerField()
