@@ -105,7 +105,7 @@ def delete_order(user):
 def create_order(user, amount):
     timestamp =  get_bri_timestamp()
     token = get_bri_token()
-    customer_code = random.randint(999999999999) 
+    customer_code = random.randint(0, 999999999999) 
     user.customer_code = str(customer_code)
     user.save()
 
