@@ -132,7 +132,7 @@ class CompanyViewSet(FlexFieldsModelViewSet):
             amount=request.data.get('amount')
         )
 
-        user.balance -= amount * company.share_price
+        user.balance -= int(request.data.get('amount')) * company.share_price
         user.save()
 
         self.serializer_class = serializers.CompanyInvestSerializer
@@ -191,7 +191,7 @@ class ProjectViewSet(FlexFieldsModelViewSet):
             project=project,
             amount=request.data.get('amount')
         )
-        user.balance -= amount
+        user.balance -= int(request.data.get('amount'))
         user.save()
 
         project.n_invests += 1
